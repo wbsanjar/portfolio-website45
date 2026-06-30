@@ -49,147 +49,272 @@ function makeCarousel(slidesId,prevId,nextId,dotsId){
 makeCarousel('cvSlides','cvPrev','cvNext','cvDots');
 makeCarousel('quantSlides','quantPrev','quantNext','quantDots');
 
-// 3D World (right-side container)
-(function(){
-  const container=document.getElementById('worldContainer');
-  if(!container)return;
-  const viewport=document.getElementById('viewport');
-  const world=document.getElementById('world');
-  const items=[];
+// Cyber Terminal
+class CyberTerminal {
+    constructor() {
+        this.commands = [
+            'hack_mainframe',
+            'decrypt_data',
+            'scan_network',
+            'inject_payload',
+            'bypass_firewall',
+            'trace_connection',
+            'execute_protocol',
+            'analyze_traffic'
+        ];
+        this.currentCommandIndex = 0;
+        this.matrixChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        this.init();
+    }
 
-  // Config (smaller for container)
-  const CONFIG={
-    itemCount:8,
-    starCount:40,
-    zGap:500,
-    camSpeed:1.2,
-    colors:['#ff003c','#00f3ff','#ccff00','#ffffff']
-  };
+    init() {
+        this.startTypingAnimation();
+        this.createMatrixRain();
+        this.addTerminalInteractivity();
+        this.startSystemAnimations();
+        this.addGlitchEffects();
+    }
 
-  const TEXTS=["IMPACT","VELOCITY","BRUTAL","SYSTEM","FUTURE","DESIGN","PIXEL","HYPER"];
+    startTypingAnimation() {
+        const typingElement = document.getElementById('typing-command');
+        if(!typingElement)return;
+        let charIndex = 0;
+        let currentCommand = this.commands[this.currentCommandIndex];
 
-  // State
-  const state={scroll:0,velocity:0,targetSpeed:0,mouseX:0,mouseY:0};
-  let W=container.clientWidth;
-  let H=container.clientHeight;
+        const typeChar = () => {
+            if (charIndex < currentCommand.length) {
+                typingElement.textContent = currentCommand.substring(0, charIndex + 1);
+                charIndex++;
+                setTimeout(typeChar, 100 + Math.random() * 100);
+            } else {
+                setTimeout(() => {
+                    this.executeCommand(currentCommand);
+                    this.nextCommand();
+                }, 2000);
+            }
+        };
+        typeChar();
+    }
 
-  function createItems(){
-    items.length=0;
-    world.innerHTML='';
-    for(let i=0;i<CONFIG.itemCount;i++){
-      const el=document.createElement('div');
-      el.className='item';
-      const isHeading=i%4===0;
-      if(isHeading){
-        const txt=document.createElement('div');
-        txt.className='big-text';
-        txt.innerText=TEXTS[i%TEXTS.length];
-        el.appendChild(txt);
-        items.push({el,type:'text',x:0,y:0,rot:0,baseZ:-i*CONFIG.zGap});
-      }else{
-        const card=document.createElement('div');
-        card.className='card';
-        const randId=Math.floor(Math.random()*9999);
-        card.innerHTML=`
-          <div class="card-header">
-            <span class="card-id">ID-${randId}</span>
-            <div style="width:6px;height:6px;background:var(--accent);"></div>
-          </div>
-          <h2>${TEXTS[i%TEXTS.length]}</h2>
-          <div class="card-footer">
-            <span>GRID: ${Math.floor(Math.random()*10)}x${Math.floor(Math.random()*10)}</span>
-          </div>
+    nextCommand() {
+        this.currentCommandIndex = (this.currentCommandIndex + 1) % this.commands.length;
+        const typingElement = document.getElementById('typing-command');
+        if(!typingElement)return;
+        let currentText = typingElement.textContent;
+        const backspace = () => {
+            if (currentText.length > 0) {
+                currentText = currentText.substring(0, currentText.length - 1);
+                typingElement.textContent = currentText;
+                setTimeout(backspace, 50);
+            } else {
+                setTimeout(() => this.startTypingAnimation(), 500);
+            }
+        };
+        setTimeout(backspace, 1000);
+    }
+
+    executeCommand(command) {
+        const terminalContent = document.getElementById('terminal-content');
+        if(!terminalContent)return;
+        const output = document.createElement('div');
+        output.className = 'output';
+        
+        const responses = {
+            'hack_mainframe': '<span class="success">✓ Mainframe access granted</span>',
+            'decrypt_data': '<span class="info">► Decryption complete: 2,847 files</span>',
+            'scan_network': '<span class="warning">⚠ 12 vulnerable nodes detected</span>',
+            'inject_payload': '<span class="success">✓ Payload injected successfully</span>',
+            'bypass_firewall': '<span class="info">► Firewall bypassed via port 8080</span>',
+            'trace_connection': '<span class="warning">⚠ Connection traced to 192.168.1.42</span>',
+            'execute_protocol': '<span class="success">✓ Protocol executed: CIPHER-2048</span>',
+            'analyze_traffic': '<span class="info">► Traffic analysis: 99.7% encrypted</span>'
+        };
+
+        output.innerHTML = responses[command] || '<span class="error">✗ Command not found</span>';
+        terminalContent.appendChild(output);
+        terminalContent.scrollTop = terminalContent.scrollHeight;
+    }
+
+    createMatrixRain() {
+        const matrixDisplay = document.getElementById('matrix-display');
+        if(!matrixDisplay)return;
+        setInterval(() => {
+            this.addMatrixColumn(matrixDisplay);
+        }, 150);
+    }
+
+    addMatrixColumn(container) {
+        const column = document.createElement('div');
+        column.style.cssText = `
+            position:absolute;left:${Math.random()*100}%;top:-20px;color:#00ff41;
+            font-size:10px;line-height:12px;animation:matrixRain 3s linear forwards;
+            opacity:.7;text-shadow:0 0 5px rgba(0,255,65,.8);
         `;
-        el.appendChild(card);
-        const angle=(i/CONFIG.itemCount)*Math.PI*6;
-        const x=Math.cos(angle)*(W*0.25);
-        const y=Math.sin(angle)*(H*0.25);
-        const rot=(Math.random()-0.5)*30;
-        items.push({el,type:'card',x,y,rot,baseZ:-i*CONFIG.zGap});
-      }
-      world.appendChild(el);
-    }
-    // Stars
-    for(let i=0;i<CONFIG.starCount;i++){
-      const el=document.createElement('div');
-      el.className='star';
-      world.appendChild(el);
-      items.push({el,type:'star',x:(Math.random()-0.5)*1200,y:(Math.random()-0.5)*1200,baseZ:-Math.random()*CONFIG.itemCount*CONFIG.zGap});
-    }
-  }
-  createItems();
-
-  // Mouse tracking relative to container
-  container.addEventListener('mousemove',e=>{
-    const r=container.getBoundingClientRect();
-    state.mouseX=((e.clientX-r.left)/r.width-0.5)*2;
-    state.mouseY=((e.clientY-r.top)/r.height-0.5)*2;
-  });
-  container.addEventListener('mouseleave',()=>{state.mouseX=0;state.mouseY=0;});
-
-  // Animation loop
-  let lenisScroll=0, lastTime2=0;
-
-  function animateWorld(time){
-    lenisScroll=window.scrollY||0;
-
-    // Smooth auto-scroll
-    state.targetSpeed=0.5+Math.sin(time*0.0003)*0.3;
-    state.velocity+=(state.targetSpeed-state.velocity)*0.05;
-
-    // Recalculate dimensions
-    W=container.clientWidth;
-    H=container.clientHeight;
-
-    // Camera tilt (mouse + auto drift)
-    const driftX=Math.sin(time*0.0005)*3;
-    const driftY=Math.cos(time*0.0004)*3;
-    const tiltX=state.mouseY*8+driftX;
-    const tiltY=state.mouseX*8+driftY;
-
-    world.style.transform=`rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-
-    // Dynamic perspective
-    const baseFov=800;
-    const fov=baseFov-Math.min(Math.abs(state.velocity)*30,300);
-    viewport.style.perspective=`${fov}px`;
-
-    // Item positions
-    const cameraZ=lenisScroll*CONFIG.camSpeed+time*0.05;
-    const modC=CONFIG.itemCount*CONFIG.zGap;
-
-    items.forEach(item=>{
-      let relZ=item.baseZ+cameraZ;
-      let vizZ=((relZ%modC)+modC)%modC;
-      if(vizZ>500)vizZ-=modC;
-
-      let alpha=1;
-      if(vizZ<-2000)alpha=0;
-      else if(vizZ<-1000)alpha=(vizZ+2000)/1000;
-      if(vizZ>100&&item.type!=='star')alpha=1-((vizZ-100)/300);
-      if(alpha<0)alpha=0;
-      item.el.style.opacity=alpha;
-
-      if(alpha>0){
-        let trans=`translate3d(${item.x}px,${item.y}px,${vizZ}px)`;
-        if(item.type==='star'){
-          const stretch=Math.max(1,Math.min(1+Math.abs(state.velocity)*0.15,8));
-          trans+=` scale3d(1,1,${stretch})`;
-        }else if(item.type==='text'){
-          trans+=` rotateZ(${item.rot}deg)`;
-          if(Math.abs(state.velocity)>0.5){
-            const offset=state.velocity*3;
-            item.el.style.textShadow=`${offset}px 0 red, ${-offset}px 0 cyan`;
-          }else item.el.style.textShadow='none';
-        }else{
-          const float=Math.sin(time*0.001+item.x)*8;
-          trans+=` rotateZ(${item.rot}deg) rotateY(${float}deg)`;
+        let matrixString = '';
+        for (let i = 0; i < 6; i++) {
+            matrixString += this.matrixChars[Math.floor(Math.random() * this.matrixChars.length)] + '<br>';
         }
-        item.el.style.transform=trans;
-      }
-    });
+        column.innerHTML = matrixString;
+        container.appendChild(column);
+        setTimeout(() => { if(column.parentNode) column.parentNode.removeChild(column); }, 3000);
+    }
 
-    requestAnimationFrame(animateWorld);
-  }
-  requestAnimationFrame(animateWorld);
-})();
+    addTerminalInteractivity() {
+        const terminal = document.querySelector('.terminal-container');
+        if(!terminal)return;
+        
+        terminal.addEventListener('click', (e) => this.createRipple(e));
+
+        const controls = document.querySelectorAll('.control');
+        controls.forEach((control, index) => {
+            control.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.handleControlClick(control, index);
+            });
+        });
+
+        document.querySelectorAll('.stat-item').forEach(item => {
+            item.addEventListener('mouseenter', () => this.addStatHoverEffect(item));
+        });
+    }
+
+    createRipple(e) {
+        const terminal = document.querySelector('.terminal-container');
+        if(!terminal)return;
+        const rect = terminal.getBoundingClientRect();
+        const ripple = document.createElement('div');
+        const size = 60;
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        ripple.style.cssText = `
+            position:absolute;width:${size}px;height:${size}px;
+            background:radial-gradient(circle,rgba(0,255,65,.3) 0%,transparent 70%);
+            border-radius:50%;left:${x}px;top:${y}px;pointer-events:none;
+            animation:rippleExpand .6s ease-out forwards;z-index:10;
+        `;
+        terminal.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+    }
+
+    handleControlClick(control, index) {
+        const terminal = document.querySelector('.terminal-container');
+        if(!terminal)return;
+        switch(index) {
+            case 0:
+                this.addGlitchEffect(terminal);
+                setTimeout(() => { terminal.style.opacity = '0'; terminal.style.transform = 'scale(0.8)'; }, 200);
+                setTimeout(() => { terminal.style.opacity = '1'; terminal.style.transform = 'scale(1)'; }, 1500);
+                break;
+            case 1:
+                terminal.style.transform = 'scaleY(0.1)';
+                setTimeout(() => { terminal.style.transform = 'scaleY(1)'; }, 800);
+                break;
+            case 2:
+                terminal.classList.toggle('maximized');
+                break;
+        }
+    }
+
+    addStatHoverEffect(item) {
+        const value = item.querySelector('.stat-value');
+        if(!value)return;
+        const label = item.querySelector('.stat-label').textContent;
+        let newValue;
+        switch(label) {
+            case 'CPU': newValue = Math.floor(Math.random() * 30 + 15) + '%'; break;
+            case 'RAM': newValue = Math.floor(Math.random() * 40 + 50) + '%'; break;
+            case 'NET': newValue = Math.floor(Math.random() * 500 + 400) + ' MB/s'; break;
+            case 'SEC': newValue = 'SECURE'; break;
+            default: newValue = value.textContent;
+        }
+        let flickerCount = 0;
+        const flicker = setInterval(() => {
+            value.style.opacity = Math.random() > 0.5 ? '1' : '0.3';
+            value.textContent = Math.random() > 0.5 ? newValue : '???';
+            flickerCount++;
+            if (flickerCount > 10) {
+                clearInterval(flicker);
+                value.style.opacity = '1';
+                value.textContent = newValue;
+            }
+        }, 100);
+    }
+
+    startSystemAnimations() {
+        setInterval(() => {
+            const progressFill = document.querySelector('.progress-fill');
+            const progressText = document.querySelector('.progress-text');
+            if (progressFill && progressText) {
+                const newWidth = Math.floor(Math.random() * 30 + 70);
+                progressFill.style.width = newWidth + '%';
+                progressText.textContent = `SCANNING... ${newWidth}%`;
+            }
+        }, 3000);
+
+        const statusIndicator = document.querySelector('.status-indicator');
+        if(statusIndicator) {
+            setInterval(() => {
+                statusIndicator.style.transform = 'scale(1.5)';
+                setTimeout(() => { statusIndicator.style.transform = 'scale(1)'; }, 200);
+            }, 2000);
+        }
+    }
+
+    addGlitchEffects() {
+        setInterval(() => { if (Math.random() < 0.1) this.triggerScreenGlitch(); }, 5000);
+        setInterval(() => this.corruptRandomText(), 8000);
+    }
+
+    addGlitchEffect(element) {
+        element.style.animation = 'none';
+        element.offsetHeight;
+        element.style.animation = 'glitchEffect .3s ease-in-out';
+    }
+
+    triggerScreenGlitch() {
+        const terminal = document.querySelector('.terminal-container');
+        if(!terminal)return;
+        this.addGlitchEffect(terminal);
+        setTimeout(() => {
+            terminal.style.filter = 'invert(1) hue-rotate(180deg)';
+            setTimeout(() => { terminal.style.filter = 'none'; }, 100);
+        }, 150);
+    }
+
+    corruptRandomText() {
+        const textElements = document.querySelectorAll('.output, .command, .stat-value');
+        if (textElements.length === 0) return;
+        const randomElement = textElements[Math.floor(Math.random() * textElements.length)];
+        const originalText = randomElement.textContent;
+        if (!originalText || originalText.length < 3) return;
+        let corruptedText = originalText;
+        for (let i = 0; i < 3; i++) {
+            const randomIndex = Math.floor(Math.random() * corruptedText.length);
+            const randomChar = this.matrixChars[Math.floor(Math.random() * this.matrixChars.length)];
+            corruptedText = corruptedText.substring(0, randomIndex) + randomChar + corruptedText.substring(randomIndex + 1);
+        }
+        randomElement.textContent = corruptedText;
+        randomElement.style.color = '#ff3b30';
+        setTimeout(() => {
+            randomElement.textContent = originalText;
+            randomElement.style.color = '';
+        }, 500);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    new CyberTerminal();
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+        document.body.style.transition = 'opacity 1s ease-out';
+        document.body.style.opacity = '1';
+    }, 100);
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'c') {
+        e.preventDefault();
+        const terminal = document.querySelector('.terminal-container');
+        if (terminal) terminal.style.animation = 'glitchEffect .3s ease-in-out';
+    }
+});

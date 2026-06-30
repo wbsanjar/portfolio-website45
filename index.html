@@ -66,9 +66,76 @@
         </div>
       </div>
       <div class="hero-img-wrap">
-        <div class="world-container" id="worldContainer">
-          <div class="viewport" id="viewport">
-            <div class="world" id="world"></div>
+        <div class="terminal-container" id="cyberTerminal">
+          <div class="terminal-header">
+            <div class="terminal-controls">
+              <span class="control close"></span>
+              <span class="control minimize"></span>
+              <span class="control maximize"></span>
+            </div>
+            <div class="terminal-title">CYBER_TERMINAL_V2.0</div>
+            <div class="terminal-status">
+              <span class="status-indicator"></span>
+              <span>ONLINE</span>
+            </div>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-content" id="terminal-content">
+              <div class="terminal-line">
+                <span class="prompt">root@cyber:~$</span>
+                <span class="command">system_initialize</span>
+              </div>
+              <div class="output"><span class="success">✓ Neural networks activated</span></div>
+              <div class="output"><span class="info">► Loading quantum algorithms...</span></div>
+              <div class="output"><span class="success">✓ Encryption protocols enabled</span></div>
+              <div class="output"><span class="warning">⚠ Firewall: 127 threats blocked</span></div>
+              <div class="terminal-line">
+                <span class="prompt">root@cyber:~$</span>
+                <span class="command">run_diagnostics</span>
+              </div>
+              <div class="output">
+                <div class="progress-bar">
+                  <div class="progress-fill"></div>
+                  <span class="progress-text">SCANNING... 87%</span>
+                </div>
+              </div>
+              <div class="terminal-line">
+                <span class="prompt">root@cyber:~$</span>
+                <span class="command">display_stats</span>
+              </div>
+              <div class="output">
+                <div class="stats-grid">
+                  <div class="stat-item"><span class="stat-label">CPU</span><span class="stat-value neon-green">23%</span></div>
+                  <div class="stat-item"><span class="stat-label">RAM</span><span class="stat-value neon-blue">67%</span></div>
+                  <div class="stat-item"><span class="stat-label">NET</span><span class="stat-value neon-purple">891 MB/s</span></div>
+                  <div class="stat-item"><span class="stat-label">SEC</span><span class="stat-value neon-red">SECURE</span></div>
+                </div>
+              </div>
+              <div class="terminal-line">
+                <span class="prompt">root@cyber:~$</span>
+                <span class="command">matrix_view</span>
+              </div>
+              <div class="output">
+                <div class="matrix-display" id="matrix-display"></div>
+              </div>
+              <div class="terminal-line">
+                <span class="prompt">root@cyber:~$</span>
+                <span class="command typing-animation" id="typing-command"></span>
+                <span class="cursor">█</span>
+              </div>
+            </div>
+          </div>
+          <div class="terminal-footer">
+            <div class="footer-info">
+              <span>CONNECTION: SECURE</span>
+              <span>LATENCY: 12ms</span>
+              <span>UPTIME: 24:07:33</span>
+            </div>
+          </div>
+          <div class="background-effects">
+            <div class="grid-overlay"></div>
+            <div class="scan-line"></div>
+            <div class="floating-code"></div>
           </div>
         </div>
       </div>
