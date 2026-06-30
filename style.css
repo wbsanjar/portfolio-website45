@@ -123,10 +123,10 @@ h2.st{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;letter-spacing:-.02em;m
 .sln{width:44px;height:2px;background:var(--accent);margin:0 0 2.8rem;}
 
 /* ABOUT */
-.ag{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
-.at p{font-size:.97rem;line-height:1.85;color:rgba(232,234,246,.75);margin-bottom:1.1rem;}
+.ag{display:flex;flex-direction:column;align-items:center;gap:2rem;text-align:center;}
+.at p{font-size:.97rem;line-height:1.85;color:rgba(232,234,246,.75);margin-bottom:1.1rem;max-width:650px;}
 .at p strong{color:var(--accent);font-weight:600;}
-.ask{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.4rem;}
+.ask{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.4rem;justify-content:center;}
 .sk{font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.08em;padding:.32rem .75rem;border:1px solid var(--border);border-radius:2px;color:var(--muted);transition:all .2s;}
 .sk:hover{border-color:var(--accent);color:var(--accent);}
 .about-photo-wrap{position:relative;display:flex;align-items:flex-start;justify-content:center;}
@@ -210,7 +210,6 @@ h2.st{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;letter-spacing:-.02em;m
 /* RESPONSIVE */
 @media(max-width:900px){
   .hi{gap:2rem;padding-top:6rem;}
-  .ag{grid-template-columns:1fr;}
   .mini-cards{grid-template-columns:1fr 1fr;}
   .art-grid{columns:2;}
   .terminal-container{max-width:340px;height:380px;}
