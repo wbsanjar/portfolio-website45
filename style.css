@@ -42,6 +42,8 @@ nav.sc{border-color:var(--border);background:rgba(8,13,26,0.92);}
 /* HERO */
 #home{min-height:100vh;display:flex;align-items:center;}
 .hi{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding-top:4rem;}
+.hi .hero-text{order:1;}
+.hi .hero-img-wrap{order:2;}
 .ey{font-family:'DM Mono',monospace;font-size:.74rem;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:1.1rem;opacity:0;animation:fu .7s .2s forwards;}
 .hn{font-size:clamp(2.5rem,5vw,4.2rem);font-weight:800;line-height:1.0;letter-spacing:-.02em;opacity:0;animation:fu .7s .35s forwards;}
 .hn span{color:var(--accent);}
@@ -209,7 +211,7 @@ h2.st{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;letter-spacing:-.02em;m
 
 /* RESPONSIVE */
 @media(max-width:900px){
-  .hi{gap:2rem;padding-top:6rem;}
+  .hi{grid-template-columns:1fr;gap:2rem;padding-top:6rem;}
   .ag{grid-template-columns:1fr;}
   .mini-cards{grid-template-columns:1fr 1fr;}
   .art-grid{columns:2;}
