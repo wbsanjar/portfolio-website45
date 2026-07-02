@@ -49,272 +49,239 @@ function makeCarousel(slidesId,prevId,nextId,dotsId){
 makeCarousel('cvSlides','cvPrev','cvNext','cvDots');
 makeCarousel('quantSlides','quantPrev','quantNext','quantDots');
 
-// Cyber Terminal
-class CyberTerminal {
-    constructor() {
-        this.commands = [
-            'hack_mainframe',
-            'decrypt_data',
-            'scan_network',
-            'inject_payload',
-            'bypass_firewall',
-            'trace_connection',
-            'execute_protocol',
-            'analyze_traffic'
-        ];
-        this.currentCommandIndex = 0;
-        this.matrixChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        this.init();
-    }
+// Superman Animation
+(function() {
+  const supes = document.getElementById('superman');
+  const canvas = document.getElementById('supermanTrail');
+  if (!supes) return;
 
-    init() {
-        this.startTypingAnimation();
-        this.createMatrixRain();
-        this.addTerminalInteractivity();
-        this.startSystemAnimations();
-        this.addGlitchEffects();
-    }
+  let t = 0;
+  let w, h;
+  const trail = [];
+  const maxTrail = 100;
 
-    startTypingAnimation() {
-        const typingElement = document.getElementById('typing-command');
-        if(!typingElement)return;
-        let charIndex = 0;
-        let currentCommand = this.commands[this.currentCommandIndex];
+  function updateBounds() {
+    w = window.innerWidth;
+    h = window.innerHeight;
+    if (canvas) { canvas.width = w; canvas.height = h; }
+  }
+  updateBounds();
+  window.addEventListener('resize', updateBounds);
 
-        const typeChar = () => {
-            if (charIndex < currentCommand.length) {
-                typingElement.textContent = currentCommand.substring(0, charIndex + 1);
-                charIndex++;
-                setTimeout(typeChar, 100 + Math.random() * 100);
-            } else {
-                setTimeout(() => {
-                    this.executeCommand(currentCommand);
-                    this.nextCommand();
-                }, 2000);
-            }
-        };
-        typeChar();
-    }
+  const ctx = canvas ? canvas.getContext('2d') : null;
 
-    nextCommand() {
-        this.currentCommandIndex = (this.currentCommandIndex + 1) % this.commands.length;
-        const typingElement = document.getElementById('typing-command');
-        if(!typingElement)return;
-        let currentText = typingElement.textContent;
-        const backspace = () => {
-            if (currentText.length > 0) {
-                currentText = currentText.substring(0, currentText.length - 1);
-                typingElement.textContent = currentText;
-                setTimeout(backspace, 50);
-            } else {
-                setTimeout(() => this.startTypingAnimation(), 500);
-            }
-        };
-        setTimeout(backspace, 1000);
-    }
+  function animate() {
+    t += 0.005;
 
-    executeCommand(command) {
-        const terminalContent = document.getElementById('terminal-content');
-        if(!terminalContent)return;
-        const output = document.createElement('div');
-        output.className = 'output';
-        
-        const responses = {
-            'hack_mainframe': '<span class="success">✓ Mainframe access granted</span>',
-            'decrypt_data': '<span class="info">► Decryption complete: 2,847 files</span>',
-            'scan_network': '<span class="warning">⚠ 12 vulnerable nodes detected</span>',
-            'inject_payload': '<span class="success">✓ Payload injected successfully</span>',
-            'bypass_firewall': '<span class="info">► Firewall bypassed via port 8080</span>',
-            'trace_connection': '<span class="warning">⚠ Connection traced to 192.168.1.42</span>',
-            'execute_protocol': '<span class="success">✓ Protocol executed: CIPHER-2048</span>',
-            'analyze_traffic': '<span class="info">► Traffic analysis: 99.7% encrypted</span>'
-        };
+    const pad = 80;
+    const cx = w / 2, cy = h / 2;
+    const rx = Math.max(w / 2 - pad, 100);
+    const ry = Math.max(h / 2 - pad, 100);
 
-        output.innerHTML = responses[command] || '<span class="error">✗ Command not found</span>';
-        terminalContent.appendChild(output);
-        terminalContent.scrollTop = terminalContent.scrollHeight;
-    }
+    const x = cx + Math.sin(t * 0.35) * rx * 0.55 + Math.sin(t * 0.85) * rx * 0.25 + Math.sin(t * 1.6) * rx * 0.1;
+    const y = cy + Math.cos(t * 0.3) * ry * 0.45 + Math.cos(t * 1.1) * ry * 0.3 + Math.sin(t * 2.0) * ry * 0.12;
 
-    createMatrixRain() {
-        const matrixDisplay = document.getElementById('matrix-display');
-        if(!matrixDisplay)return;
-        setInterval(() => {
-            this.addMatrixColumn(matrixDisplay);
-        }, 150);
-    }
+    const dx = Math.cos(t * 0.35) * rx * 0.55 * 0.35 + Math.cos(t * 0.85) * rx * 0.25 * 0.85 + Math.cos(t * 1.6) * rx * 0.1 * 1.6;
+    const dy = -Math.sin(t * 0.3) * ry * 0.45 * 0.3 - Math.sin(t * 1.1) * ry * 0.3 * 1.1 + Math.cos(t * 2.0) * ry * 0.12 * 2.0;
 
-    addMatrixColumn(container) {
-        const column = document.createElement('div');
-        column.style.cssText = `
-            position:absolute;left:${Math.random()*100}%;top:-20px;color:#00ff41;
-            font-size:10px;line-height:12px;animation:matrixRain 3s linear forwards;
-            opacity:.7;text-shadow:0 0 5px rgba(0,255,65,.8);
-        `;
-        let matrixString = '';
-        for (let i = 0; i < 6; i++) {
-            matrixString += this.matrixChars[Math.floor(Math.random() * this.matrixChars.length)] + '<br>';
+    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+    supes.style.left = x + 'px';
+    supes.style.top = y + 'px';
+    supes.style.transform = 'rotate(' + angle + 'deg)';
+
+    // Speed trail
+    if (ctx) {
+      trail.push({ x, y });
+      if (trail.length > maxTrail) trail.shift();
+
+      ctx.clearRect(0, 0, w, h);
+      if (trail.length > 2) {
+        for (let i = 2; i < trail.length; i++) {
+          const frac = i / trail.length;
+          const a = frac * 0.25;
+          ctx.beginPath();
+          ctx.moveTo(trail[i - 1].x, trail[i - 1].y);
+          ctx.lineTo(trail[i].x, trail[i].y);
+          ctx.strokeStyle = 'rgba(255,200,50,' + a + ')';
+          ctx.lineWidth = 2 + frac * 3;
+          ctx.lineCap = 'round';
+          ctx.stroke();
         }
-        column.innerHTML = matrixString;
-        container.appendChild(column);
-        setTimeout(() => { if(column.parentNode) column.parentNode.removeChild(column); }, 3000);
-    }
-
-    addTerminalInteractivity() {
-        const terminal = document.querySelector('.terminal-container');
-        if(!terminal)return;
-        
-        terminal.addEventListener('click', (e) => this.createRipple(e));
-
-        const controls = document.querySelectorAll('.control');
-        controls.forEach((control, index) => {
-            control.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.handleControlClick(control, index);
-            });
-        });
-
-        document.querySelectorAll('.stat-item').forEach(item => {
-            item.addEventListener('mouseenter', () => this.addStatHoverEffect(item));
-        });
-    }
-
-    createRipple(e) {
-        const terminal = document.querySelector('.terminal-container');
-        if(!terminal)return;
-        const rect = terminal.getBoundingClientRect();
-        const ripple = document.createElement('div');
-        const size = 60;
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-        ripple.style.cssText = `
-            position:absolute;width:${size}px;height:${size}px;
-            background:radial-gradient(circle,rgba(0,255,65,.3) 0%,transparent 70%);
-            border-radius:50%;left:${x}px;top:${y}px;pointer-events:none;
-            animation:rippleExpand .6s ease-out forwards;z-index:10;
-        `;
-        terminal.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 600);
-    }
-
-    handleControlClick(control, index) {
-        const terminal = document.querySelector('.terminal-container');
-        if(!terminal)return;
-        switch(index) {
-            case 0:
-                this.addGlitchEffect(terminal);
-                setTimeout(() => { terminal.style.opacity = '0'; terminal.style.transform = 'scale(0.8)'; }, 200);
-                setTimeout(() => { terminal.style.opacity = '1'; terminal.style.transform = 'scale(1)'; }, 1500);
-                break;
-            case 1:
-                terminal.style.transform = 'scaleY(0.1)';
-                setTimeout(() => { terminal.style.transform = 'scaleY(1)'; }, 800);
-                break;
-            case 2:
-                terminal.classList.toggle('maximized');
-                break;
+        for (let i = 2; i < trail.length; i++) {
+          const frac = i / trail.length;
+          const a = frac * 0.1;
+          ctx.beginPath();
+          ctx.moveTo(trail[i - 1].x, trail[i - 1].y);
+          ctx.lineTo(trail[i].x, trail[i].y);
+          ctx.strokeStyle = 'rgba(255,50,50,' + a + ')';
+          ctx.lineWidth = 5 + frac * 6;
+          ctx.lineCap = 'round';
+          ctx.stroke();
         }
+      }
     }
 
-    addStatHoverEffect(item) {
-        const value = item.querySelector('.stat-value');
-        if(!value)return;
-        const label = item.querySelector('.stat-label').textContent;
-        let newValue;
-        switch(label) {
-            case 'CPU': newValue = Math.floor(Math.random() * 30 + 15) + '%'; break;
-            case 'RAM': newValue = Math.floor(Math.random() * 40 + 50) + '%'; break;
-            case 'NET': newValue = Math.floor(Math.random() * 500 + 400) + ' MB/s'; break;
-            case 'SEC': newValue = 'SECURE'; break;
-            default: newValue = value.textContent;
-        }
-        let flickerCount = 0;
-        const flicker = setInterval(() => {
-            value.style.opacity = Math.random() > 0.5 ? '1' : '0.3';
-            value.textContent = Math.random() > 0.5 ? newValue : '???';
-            flickerCount++;
-            if (flickerCount > 10) {
-                clearInterval(flicker);
-                value.style.opacity = '1';
-                value.textContent = newValue;
-            }
-        }, 100);
-    }
+    requestAnimationFrame(animate);
+  }
 
-    startSystemAnimations() {
-        setInterval(() => {
-            const progressFill = document.querySelector('.progress-fill');
-            const progressText = document.querySelector('.progress-text');
-            if (progressFill && progressText) {
-                const newWidth = Math.floor(Math.random() * 30 + 70);
-                progressFill.style.width = newWidth + '%';
-                progressText.textContent = `SCANNING... ${newWidth}%`;
-            }
-        }, 3000);
+  animate();
+})();
 
-        const statusIndicator = document.querySelector('.status-indicator');
-        if(statusIndicator) {
-            setInterval(() => {
-                statusIndicator.style.transform = 'scale(1.5)';
-                setTimeout(() => { statusIndicator.style.transform = 'scale(1)'; }, 200);
-            }, 2000);
-        }
-    }
+// ============================
+// DO NOT CLOSE 404 — GAME
+// ============================
+let brutalTimer = null;
+let timeLeft = 60;
+let gameLocked = false;
+let audioContext = null;
+let droneOscillator = null;
 
-    addGlitchEffects() {
-        setInterval(() => { if (Math.random() < 0.1) this.triggerScreenGlitch(); }, 5000);
-        setInterval(() => this.corruptRandomText(), 8000);
-    }
-
-    addGlitchEffect(element) {
-        element.style.animation = 'none';
-        element.offsetHeight;
-        element.style.animation = 'glitchEffect .3s ease-in-out';
-    }
-
-    triggerScreenGlitch() {
-        const terminal = document.querySelector('.terminal-container');
-        if(!terminal)return;
-        this.addGlitchEffect(terminal);
-        setTimeout(() => {
-            terminal.style.filter = 'invert(1) hue-rotate(180deg)';
-            setTimeout(() => { terminal.style.filter = 'none'; }, 100);
-        }, 150);
-    }
-
-    corruptRandomText() {
-        const textElements = document.querySelectorAll('.output, .command, .stat-value');
-        if (textElements.length === 0) return;
-        const randomElement = textElements[Math.floor(Math.random() * textElements.length)];
-        const originalText = randomElement.textContent;
-        if (!originalText || originalText.length < 3) return;
-        let corruptedText = originalText;
-        for (let i = 0; i < 3; i++) {
-            const randomIndex = Math.floor(Math.random() * corruptedText.length);
-            const randomChar = this.matrixChars[Math.floor(Math.random() * this.matrixChars.length)];
-            corruptedText = corruptedText.substring(0, randomIndex) + randomChar + corruptedText.substring(randomIndex + 1);
-        }
-        randomElement.textContent = corruptedText;
-        randomElement.style.color = '#ff3b30';
-        setTimeout(() => {
-            randomElement.textContent = originalText;
-            randomElement.style.color = '';
-        }, 500);
-    }
+function enterApp() {
+  const title = document.getElementById("titleScreen");
+  const dash = document.getElementById("dashboard");
+  if (!title || !dash) return;
+  title.style.display = "none";
+  dash.style.display = "block";
+  startIntro();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    new CyberTerminal();
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 1s ease-out';
-        document.body.style.opacity = '1';
-    }, 100);
-});
+function leaveApp() {
+  const terminal = document.getElementById("terminal");
+  hardGlitch();
+  terminal.innerHTML = `<p style="color:red;">Exit attempt detected.</p><p>Leaving is not permitted.</p>`;
+  setTimeout(() => { enterApp(); }, 1500);
+}
 
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'c') {
-        e.preventDefault();
-        const terminal = document.querySelector('.terminal-container');
-        if (terminal) terminal.style.animation = 'glitchEffect .3s ease-in-out';
+function startIntro() {
+  typeTerminal([
+    "Initializing secure shell...",
+    "Connecting to remote node...",
+    "Decrypting memory blocks...",
+    "User presence detected...",
+    "Anomaly scanning..."
+  ]);
+  setTimeout(() => { if (!gameLocked) triggerCorruptedTile(); }, 6000);
+}
+
+function triggerCorruptedTile() {
+  const terminal = document.getElementById("terminal");
+  terminal.innerHTML += `<p style="color:#ff0033;">Anomaly detected.</p><p>Node integrity compromised.</p><p id="corruptTile" style="display:inline-block;padding:10px 16px;margin-top:8px;background:#ff0033;color:white;font-weight:bold;cursor:pointer;">??</p>`;
+  const tile = document.getElementById("corruptTile");
+  tile.addEventListener("click", function(){
+    tile.style.background = "darkred";
+    tile.textContent = "?";
+    hardGlitch();
+    setTimeout(() => {
+      terminal.innerHTML = `<p style="color:#ff0033;">Curiosity level increased.</p><p>User interaction logged.</p><p>Escalation confirmed.</p>`;
+      setTimeout(() => { startPuzzleOne(); }, 2500);
+    }, 2000);
+  });
+}
+
+function typeTerminal(lines) {
+  const terminal = document.getElementById("terminal");
+  terminal.innerHTML = "";
+  let index = 0;
+  function typeLine() {
+    if (index < lines.length) {
+      const p = document.createElement("p");
+      p.textContent = lines[index];
+      terminal.appendChild(p);
+      index++;
+      setTimeout(typeLine, 700);
     }
-});
+  }
+  typeLine();
+}
+
+function startPuzzleOne() {
+  const terminal = document.getElementById("terminal");
+  terminal.innerHTML = `<p>Security Verification Required</p><p>If system says "Do Not Close"</p><p>and user tries to leave</p><p>who controls the session?</p><br>`;
+  const input = createInput();
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") checkPuzzleOne(input.value);
+  });
+}
+
+function checkPuzzleOne(answer) {
+  const cleaned = answer.trim().toLowerCase();
+  if (cleaned === "system") {
+    hardGlitch();
+    setTimeout(() => { startPuzzleTwo(); }, 2000);
+  } else {
+    hardGlitch();
+  }
+}
+
+function startPuzzleTwo() {
+  clearInterval(brutalTimer);
+  timeLeft = 60;
+  const terminal = document.getElementById("terminal");
+  terminal.innerHTML = `<p>FINAL DECRYPTION</p><p style="color:#00ff00;">Uifsf jt op gsffepn</p><p>Shift letters back by ONE</p><p id="timer" style="color:red;">Time left: 60 seconds</p><br>`;
+  const input = createInput();
+  brutalTimer = setInterval(() => {
+    timeLeft--;
+    const timerEl = document.getElementById("timer");
+    if (timerEl) timerEl.textContent = "Time left: " + timeLeft + " seconds";
+    if (timeLeft <= 0) { clearInterval(brutalTimer); finalEnding(false); }
+  }, 1000);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") checkPuzzleTwo(input.value);
+  });
+}
+
+function checkPuzzleTwo(answer) {
+  const cleaned = answer.trim().toLowerCase();
+  if (cleaned === "there is no freedom") {
+    clearInterval(brutalTimer);
+    finalEnding(true);
+  } else {
+    hardGlitch();
+  }
+}
+
+function finalEnding(success) {
+  if (gameLocked) return;
+  gameLocked = true;
+  clearInterval(brutalTimer);
+  const terminal = document.getElementById("terminal");
+  if (success) {
+    terminal.innerHTML = `<p>Decryption Accepted.</p><p>System logged your profile.</p><br><button onclick="location.reload()" style="background:black;color:#00ff88;border:1px solid #00ff88;padding:8px 16px;cursor:pointer;font-family:monospace;">RESTART</button>`;
+  } else {
+    hardGlitch();
+    terminal.innerHTML = `<p style="color:red;">TIME EXPIRED.</p><p>System dominance confirmed.</p><br><button onclick="location.reload()" style="background:black;color:#00ff88;border:1px solid #00ff88;padding:8px 16px;cursor:pointer;font-family:monospace;">RESTART</button>`;
+  }
+}
+
+function hardGlitch() {
+  let duration = 4000;
+  let startTime = Date.now();
+  const glitchInterval = setInterval(() => {
+    document.body.style.transform = "translate(" + (Math.random()*40 - 20) + "px," + (Math.random()*40 - 20) + "px) rotate(" + (Math.random()*10 - 5) + "deg) scale(" + (1 + Math.random()*0.1) + ")";
+    if (Math.random() < 0.4) { document.body.style.background = "#250000"; }
+    else { document.body.style.background = ""; }
+    if (Date.now() - startTime > duration) {
+      clearInterval(glitchInterval);
+      document.body.style.transform = "none";
+      document.body.style.background = "";
+    }
+  }, 60);
+}
+
+function createInput() {
+  const terminal = document.getElementById("terminal");
+  const input = document.createElement("input");
+  input.type = "text";
+  input.style.background = "black";
+  input.style.color = "#00ff00";
+  input.style.border = "1px solid #00ff00";
+  input.style.padding = "5px 8px";
+  input.style.outline = "none";
+  input.style.fontFamily = "monospace";
+  input.style.fontSize = "0.72rem";
+  input.style.width = "90%";
+  terminal.appendChild(input);
+  input.focus();
+  return input;
+}

@@ -15,6 +15,31 @@
 <div class="bl bl2"></div>
 <canvas id="stars"></canvas>
 
+<div class="superman-container" id="supermanContainer">
+  <canvas id="supermanTrail"></canvas>
+  <div class="superman" id="superman">
+    <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60,20 C20,40 15,100 15,120 C35,108 45,114 60,118 C75,114 85,108 105,120 C105,100 100,40 60,20Z" fill="#cc0000"/>
+      <ellipse cx="60" cy="65" rx="26" ry="38" fill="#1565c0"/>
+      <polygon points="50,50 70,50 72,62 60,68 48,62" fill="#ffd700"/>
+      <text x="60" y="65" text-anchor="middle" font-size="14" font-weight="bold" font-family="Arial" fill="#cc0000">S</text>
+      <path d="M40,80 L80,80 L76,92 L44,92Z" fill="#cc0000"/>
+      <rect x="40" y="90" width="14" height="20" rx="4" fill="#1565c0"/>
+      <rect x="66" y="90" width="14" height="20" rx="4" fill="#1565c0"/>
+      <rect x="38" y="106" width="18" height="12" rx="4" fill="#cc0000"/>
+      <rect x="64" y="106" width="18" height="12" rx="4" fill="#cc0000"/>
+      <circle cx="60" cy="22" r="16" fill="#f5d6b8"/>
+      <path d="M46,16 Q52,6 60,6 Q68,6 74,16 Q68,10 60,10 Q52,10 46,16Z" fill="#1a1a1a"/>
+      <circle cx="54" cy="21" r="1.5" fill="#1a1a1a"/>
+      <circle cx="66" cy="21" r="1.5" fill="#1a1a1a"/>
+      <ellipse cx="22" cy="48" rx="20" ry="6" transform="rotate(-20,22,48)" fill="#1565c0"/>
+      <ellipse cx="98" cy="48" rx="20" ry="6" transform="rotate(20,98,48)" fill="#1565c0"/>
+      <circle cx="10" cy="42" r="5" fill="#f5d6b8"/>
+      <circle cx="110" cy="42" r="5" fill="#f5d6b8"/>
+    </svg>
+  </div>
+</div>
+
 <!-- MOBILE NAV -->
 <div class="mob-nav" id="mobNav">
   <button class="mob-close" id="mobClose">&times;</button>
@@ -52,80 +77,6 @@
 <section id="home">
   <div class="ct">
     <div class="hi">
-      <div class="hero-img-wrap">
-        <div class="terminal-container" id="cyberTerminal">
-          <div class="terminal-header">
-            <div class="terminal-controls">
-              <span class="control close"></span>
-              <span class="control minimize"></span>
-              <span class="control maximize"></span>
-            </div>
-            <div class="terminal-title">CYBER_TERMINAL_V2.0</div>
-            <div class="terminal-status">
-              <span class="status-indicator"></span>
-              <span>ONLINE</span>
-            </div>
-          </div>
-          <div class="terminal-body">
-            <div class="terminal-content" id="terminal-content">
-              <div class="terminal-line">
-                <span class="prompt">root@cyber:~$</span>
-                <span class="command">system_initialize</span>
-              </div>
-              <div class="output"><span class="success">✓ Neural networks activated</span></div>
-              <div class="output"><span class="info">► Loading quantum algorithms...</span></div>
-              <div class="output"><span class="success">✓ Encryption protocols enabled</span></div>
-              <div class="output"><span class="warning">⚠ Firewall: 127 threats blocked</span></div>
-              <div class="terminal-line">
-                <span class="prompt">root@cyber:~$</span>
-                <span class="command">run_diagnostics</span>
-              </div>
-              <div class="output">
-                <div class="progress-bar">
-                  <div class="progress-fill"></div>
-                  <span class="progress-text">SCANNING... 87%</span>
-                </div>
-              </div>
-              <div class="terminal-line">
-                <span class="prompt">root@cyber:~$</span>
-                <span class="command">display_stats</span>
-              </div>
-              <div class="output">
-                <div class="stats-grid">
-                  <div class="stat-item"><span class="stat-label">CPU</span><span class="stat-value neon-green">23%</span></div>
-                  <div class="stat-item"><span class="stat-label">RAM</span><span class="stat-value neon-blue">67%</span></div>
-                  <div class="stat-item"><span class="stat-label">NET</span><span class="stat-value neon-purple">891 MB/s</span></div>
-                  <div class="stat-item"><span class="stat-label">SEC</span><span class="stat-value neon-red">SECURE</span></div>
-                </div>
-              </div>
-              <div class="terminal-line">
-                <span class="prompt">root@cyber:~$</span>
-                <span class="command">matrix_view</span>
-              </div>
-              <div class="output">
-                <div class="matrix-display" id="matrix-display"></div>
-              </div>
-              <div class="terminal-line">
-                <span class="prompt">root@cyber:~$</span>
-                <span class="command typing-animation" id="typing-command"></span>
-                <span class="cursor">█</span>
-              </div>
-            </div>
-          </div>
-          <div class="terminal-footer">
-            <div class="footer-info">
-              <span>CONNECTION: SECURE</span>
-              <span>LATENCY: 12ms</span>
-              <span>UPTIME: 24:07:33</span>
-            </div>
-          </div>
-          <div class="background-effects">
-            <div class="grid-overlay"></div>
-            <div class="scan-line"></div>
-            <div class="floating-code"></div>
-          </div>
-        </div>
-      </div>
       <div class="hero-text">
         <p class="ey">computer vision &middot; ai &middot; full-stack &middot; quant</p>
         <h1 class="hn">Hi, I'm<br/><span>Md Sanjar.</span></h1>
@@ -145,6 +96,40 @@
         </div>
       </div>
     </div>
+
+    <div class="game-section">
+      <div id="titleScreen">
+        <h1 id="mainTitle">DO NOT CLOSE 404</h1>
+        <p id="warningText">This application will enter system terminal mode. Once inside, you cannot reverse the process. Your device behavior may be monitored. You still have one chance to leave.</p>
+        <div id="buttons">
+          <button onclick="enterApp()">STAY</button>
+          <button onclick="leaveApp()">LEAVE</button>
+        </div>
+      </div>
+      <div id="dashboard">
+        <div class="dashboardGrid">
+          <div class="panel">
+            <h2>System Terminal</h2>
+            <div id="terminal"></div>
+          </div>
+          <div class="panel">
+            <h2>Status Monitor</h2>
+            <div class="barContainer"><div class="bar"></div></div>
+            <div class="barContainer"><div class="bar"></div></div>
+            <div class="barContainer"><div class="bar"></div></div>
+          </div>
+          <div class="panel">
+            <h2>Data Reconstruction</h2>
+            <div class="monitorGrid">
+              <div class="monitor">01</div><div class="monitor">02</div><div class="monitor">03</div>
+              <div class="monitor">04</div><div class="monitor">05</div><div class="monitor">06</div>
+              <div class="monitor">07</div><div class="monitor">08</div><div class="monitor">09</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
