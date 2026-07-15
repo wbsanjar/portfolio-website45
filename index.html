@@ -378,6 +378,36 @@
 
 <div class="dv"></div>
 
+<!-- MAP -->
+<section id="map-section">
+  <div class="ct">
+    <div class="rv">
+      <p class="sl">location</p>
+      <h2 class="st">Find Me</h2>
+      <div class="sln"></div>
+    </div>
+    <div class="rv" id="map" style="width:100%;height:320px;border-radius:8px;border:1px solid var(--border);overflow:hidden;"></div>
+  </div>
+</section>
+
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css"/>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var map=new maplibregl.Map({
+    container:'map',
+    style:'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+    center:[77.1025,28.7041],
+    zoom:11,
+    attributionControl:{compact:true}
+  });
+  map.addControl(new maplibregl.NavigationControl(),'bottom-right');
+  new maplibregl.Marker().setLngLat([77.1025,28.7041]).addTo(map);
+});
+</script>
+
+<div class="dv"></div>
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="ct">
